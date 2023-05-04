@@ -15,11 +15,6 @@ def home (request):
     return render(request,'home/index.html',context = context)
 
 
-def blog_home (request):
-    return render(request,'home/blog-home.html')
-
-def blog_single (request):
-    return render(request,'home/blog-single.html')
 
 def contact (request):
     return render(request,'home/contact.html')
