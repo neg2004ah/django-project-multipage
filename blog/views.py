@@ -1,9 +1,10 @@
 from django.shortcuts import render
+from django.utils import timezone
 from .models import *
 
 
 def blog_home(request):
-    posts = Post.objects.filter(status = True)
+    posts = Post.objects.filter(status= True,published_date__lte = timezone.now())
     
     context = {
         'posts' : posts
