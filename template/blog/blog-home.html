@@ -1,6 +1,6 @@
 {% extends 'inherit/base.html' %}
 {% load static %}
-{% block 'title' %}BLOG_HOME{% endblock 'title' %}
+{% block 'title' %}BLOG{% endblock 'title' %}
 {% block 'content' %}	
 			<!-- start banner Area -->
 			<section class="banner-area relative blog-home-banner" id="home">	
@@ -31,7 +31,7 @@
 									<div class="overlay overlay-bg"></div>
 								    <a href="#" target="_blank">
 								      <div class="thumb">
-								  		 <img class="content-image img-fluid d-b.jpg' %}' lock mx-auto" src="{% static 'img/blog/cat-widget1.jpg' %}" alt="">
+								  		 <img class="content-image img-fluid d-block mx-auto" src="{% static 'img/blog/cat-widget1.jpg' %}" alt="" >
 								  	  </div>
 								      <div class="content-details">
 								        <h4 class="content-title mx-auto text-uppercase">Social life</h4>
@@ -89,13 +89,14 @@
 							{% for post in posts %}
 								<div class="single-post row">
 									<div class="col-lg-3  col-md-3 meta-details">
-										{% for tag in post.tag.all %}
 											<ul class="tags">
-												<li><a href="#">{{tag.name}},</a></li>
-										{% endfor %}
+												{% for tag in post.tag.all %}
+													<a href="{% url 'blog:blog_home_with_tag' tag=tag.name %}">{{tag.name}} , </a>
+												{% endfor %}
 										</ul>
+										
 										<div class="user-details row">
-											<p class="user-name col-lg-12 col-md-12 col-6"><a href="#">{{post.author.get_full_name}}</a> <span class="lnr lnr-user"></span></p>
+											<p class="user-name col-lg-12 col-md-12 col-6"><a href="{% url 'blog:blog_home_with_user' username=post.author.username %}">{{post.author.get_full_name}}</a> <span class="lnr lnr-user"></span></p>
 											<p class="date col-lg-12 col-md-12 col-6"><a href="#">{{post.published_date|date:"d M Y"}}</a> <span class="lnr lnr-calendar-full"></span></p>
 											<p class="view col-lg-12 col-md-12 col-6"><a href="#">{{post.counted_views}} Views</a> <span class="lnr lnr-eye"></span></p>
 											<p class="comments col-lg-12 col-md-12 col-6"><a href="#">{{post.counted_comments}} Comments</a> <span class="lnr lnr-bubble"></span></p>						
@@ -116,23 +117,29 @@
 		                    <nav class="blog-pagination justify-content-center d-flex">
 		                        <ul class="pagination">
 		                            <li class="page-item">
-		                                <a href="#" class="page-link" aria-label="Previous">
+										{% if posts.has_previous %}
+		                                <a href="?page={{posts.previous_page_number}}" class="page-link" aria-label="Previous">
 		                                    <span aria-hidden="true">
 		                                        <span class="lnr lnr-chevron-left"></span>
 		                                    </span>
 		                                </a>
+										{% endif %}
 		                            </li>
-		                            <li class="page-item"><a href="#" class="page-link">01</a></li>
-		                            <li class="page-item active"><a href="#" class="page-link">02</a></li>
-		                            <li class="page-item"><a href="#" class="page-link">03</a></li>
-		                            <li class="page-item"><a href="#" class="page-link">04</a></li>
-		                            <li class="page-item"><a href="#" class="page-link">09</a></li>
+									{% for i in posts.paginator.page_range  %}
+										{% if posts.number == i %}
+											<li class="page-item active"><a href="?page={{i}}" class="page-link">{{i}}</a></li>
+										{% else %}
+											<li class="page-item"><a href="?page={{i}}" class="page-link">{{i}}</a></li>
+										{% endif %}
+									{% endfor %}
 		                            <li class="page-item">
-		                                <a href="#" class="page-link" aria-label="Next">
+										{% if posts.has_next %}
+		                                <a href="?page={{posts.next_page_number}}" class="page-link" aria-label="Next">
 		                                    <span aria-hidden="true">
 		                                        <span class="lnr lnr-chevron-right"></span>
 		                                    </span>
 		                                </a>
+										{% endif %}
 		                            </li>
 		                        </ul>
 		                    </nav>
