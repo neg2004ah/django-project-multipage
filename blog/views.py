@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from django.utils import timezone
 from .models import *
 from advertisment.models import *
@@ -46,10 +46,18 @@ def blog_home(request,tag = None,username = None,cat = None):
     return render(request , 'blog/blog-home.html',context = context)
 
 
+def blog_single(request,pid):
+    try:
+        post = Post.objects.get(id=pid,status = True)
+        posts = Post.objects.filter(status= True,published_date__lte = timezone.now())
+        last_four_posts = posts[:4]
+        post.counted_views += 1
+        post.save()
 
-
-
-
-
-def blog_single(request):
-    return render(request , 'blog/blog-single.html')
+        context = {
+            'post' : post,
+            'last_four_posts' : last_four_posts,
+        }
+        return render(request , 'blog/blog-single.html',context=context)
+    except:
+        return render(request,'blog/404.html')
