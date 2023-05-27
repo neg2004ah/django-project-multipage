@@ -47,16 +47,44 @@ def blog_home(request,tag = None,username = None,cat = None):
 
 
 def blog_single(request,pid):
+    
+   
+
+    
+    
     try:
         post = Post.objects.get(id=pid,status = True)
         posts = Post.objects.filter(status= True,published_date__lte = timezone.now())
         last_four_posts = posts[:4]
         post.counted_views += 1
         post.save()
+        
+        
+        post_list_id = []
+        posts = Post.objects.filter(status = True)
+        
+        for post in posts:
+            post_list_id.append(post.id)
+            
+        post_list_id.reverse()
+                
+        if post_list_id.index(pid) == 0:
+            previous_post = None
+            next_post = posts.get(id=post_list_id[1])
+            
+        elif post_list_id.index(pid) == post_list_id.index(post_list_id[-1]):
+            previous_post = posts.get(id = post_list_id[-2])
+            next_post = None
+
+        else:
+            next_post = posts.get(id = post_list_id[post_list_id.index(pid) +1 ])
+            previous_post = posts.get(id = post_list_id[post_list_id.index(pid) -1 ])
 
         context = {
             'post' : post,
             'last_four_posts' : last_four_posts,
+            'next' : next_post,
+            'previous' : previous_post,
         }
         return render(request , 'blog/blog-single.html',context=context)
     except:
