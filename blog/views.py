@@ -1,6 +1,7 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,HttpResponseRedirect
 from django.utils import timezone
 from .models import *
+from .forms import *
 from advertisment.models import *
 from django.core.paginator import Paginator , PageNotAnInteger , EmptyPage
 
@@ -48,18 +49,7 @@ def blog_home(request,tag = None,username = None,cat = None):
 
 def blog_single(request,pid):
     
-   
-
-    
-    
-    try:
-        post = Post.objects.get(id=pid,status = True)
-        posts = Post.objects.filter(status= True,published_date__lte = timezone.now())
-        last_four_posts = posts[:4]
-        post.counted_views += 1
-        post.save()
-        
-        
+    if request.method == 'GET':
         post_list_id = []
         posts = Post.objects.filter(status = True)
         
@@ -75,17 +65,32 @@ def blog_single(request,pid):
         elif post_list_id.index(pid) == post_list_id.index(post_list_id[-1]):
             previous_post = posts.get(id = post_list_id[-2])
             next_post = None
-
         else:
             next_post = posts.get(id = post_list_id[post_list_id.index(pid) +1 ])
             previous_post = posts.get(id = post_list_id[post_list_id.index(pid) -1 ])
-
-        context = {
-            'post' : post,
-            'last_four_posts' : last_four_posts,
-            'next' : next_post,
-            'previous' : previous_post,
-        }
-        return render(request , 'blog/blog-single.html',context=context)
-    except:
-        return render(request,'blog/404.html')
+            
+            
+        try:
+            comments = Comments.objects.filter(which_post =pid ,status = True)
+            post = Post.objects.get(id=pid,status = True)
+            posts = Post.objects.filter(status= True,published_date__lte = timezone.now())
+            last_four_posts = posts[:4]
+            post.counted_views += 1
+            post.save()
+            
+            context = {
+                'post' : post,
+                'last_four_posts' : last_four_posts,
+                'next' : next_post,
+                'previous' : previous_post,
+                'comments': comments,
+            }
+            return render(request , 'blog/blog-single.html',context=context)
+        except:
+            return render(request,'blog/404.html')
+        
+    elif request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.path_info)

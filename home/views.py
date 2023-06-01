@@ -1,5 +1,5 @@
-from django.shortcuts import render,redirect
-from .forms import NewsletterForm
+from django.shortcuts import render,redirect,HttpResponseRedirect
+from .forms import NewsletterForm,ContactUsForm
 from blog.models import *
 from .models import *
 
@@ -21,17 +21,22 @@ def home (request):
         return render(request,'home/index.html',context = context)
     
     elif request.method == 'POST':
-        new = Newsletter()
         form = NewsletterForm(request.POST)
         if form.is_valid():
-            new.email = request.POST.get('email')
-            new.save()
-        return redirect('/')
+            form.save()
+            return redirect('/')
         
 
-
-def contact (request):
-    return render(request,'home/contact.html')
+def contact(request):
+    if request.method == 'GET':
+        return render(request,"home/contact.html")
+    
+    elif request.method == 'POST':
+        form = ContactUsForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.path_info)
+        
 
 def elements (request):
     return render(request,'home/elements.html')

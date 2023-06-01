@@ -40,4 +40,20 @@ class Post(models.Model):
     def __str__(self):
         return self.title
     
+
+
+class Comments(models.Model):
+    which_post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    email = models.EmailField()
+    subject = models.CharField(max_length=250)
+    message = models.TextField()
+    status = models.BooleanField(default=False)
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ("-created_date",)
+
+    def __str__(self):
+        return self.name
     
