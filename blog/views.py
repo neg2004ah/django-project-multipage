@@ -1,4 +1,4 @@
-from django.shortcuts import render,get_object_or_404,HttpResponseRedirect
+from django.shortcuts import render,get_object_or_404,HttpResponseRedirect,redirect
 from django.utils import timezone
 from .models import *
 from .forms import *
@@ -72,6 +72,7 @@ def blog_single(request,pid):
             
         try:
             comments = Comments.objects.filter(which_post =pid ,status = True)
+            replay = Replay.objects.filter(status = True)
             post = Post.objects.get(id=pid,status = True)
             posts = Post.objects.filter(status= True,published_date__lte = timezone.now())
             last_four_posts = posts[:4]
@@ -84,6 +85,7 @@ def blog_single(request,pid):
                 'next' : next_post,
                 'previous' : previous_post,
                 'comments': comments,
+                'replay' : replay,
             }
             return render(request , 'blog/blog-single.html',context=context)
         except:
@@ -94,3 +96,46 @@ def blog_single(request,pid):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(request.path_info)
+        
+        
+        
+def replay(request, cid):
+     comment = Comments.objects.get(id=cid)
+     if request.method == 'GET':
+          context = {
+               'comment' : comment,
+          }
+          return render(request, 'blog/reply.html', context=context)   
+     
+     elif request.method == 'POST':
+          form = ReplayForm(request.POST)
+          if form.is_valid():
+               form.save()
+               return redirect('/blog/')
+           
+           
+           
+           
+def delete(request, cid):
+     comment = Comments.objects.get(id=cid)
+     comment.delete()
+     return redirect('/')   
+     
+     
+     
+
+def edit(request, cid):
+     comment = Comments.objects.get(id=cid)
+     if request.method == 'GET':
+          
+          form = CommentForm(instance=comment)
+          context = {
+               'form' : form,
+          }
+          return render(request,'blog/commentedit.html',context=context)
+      
+     elif request.method == "POST" :
+          form = CommentForm(request.POST, instance=comment)
+          if form.is_valid():
+               form.save()
+               return redirect('/blog/')

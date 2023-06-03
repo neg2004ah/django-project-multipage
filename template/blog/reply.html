@@ -1,0 +1,13 @@
+{% extends 'inherit/base.html' %}
+{% load static %}
+{% block 'content' %}
+
+<form method="post"><br><br><br><br>
+    {% csrf_token %}
+    <input type="hidden" value="{{comment.id}}" name="which_comment">
+    <div class="form-group">
+        <textarea class="form-control mb-10" rows="5" name="message" placeholder="Messege" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Messege'" required=""></textarea>
+    </div>
+    <button type="submit" class="primary-btn text-uppercase">Post Comment</button>
+</form>
+{% endblock 'content' %}

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comments
+from .models import Comments,Replay
 
 
 
@@ -11,3 +11,9 @@ class CommentForm(forms.ModelForm):
         fields = ['which_post', 'name', 'email', 'subject', 'message']
         
         
+class ReplayForm(forms.ModelForm):
+
+
+    class Meta:
+        model = Replay
+        fields = ['which_comment', 'message']
