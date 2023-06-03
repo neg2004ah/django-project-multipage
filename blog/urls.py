@@ -13,4 +13,5 @@ urlpatterns = [
     path('replay/<int:cid>', replay , name='replay'),
     path('delete/<int:cid>', delete , name='delete'),
     path('edit/<int:cid>', edit , name='edit'),
+    path('add/', add , name='add'),
 ]

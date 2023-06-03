@@ -209,11 +209,20 @@
 								<li><a href="{% url 'blog:blog_home_with_tag' tag=tag.name %}">{{tag.name}}</a></li>
 							{% endfor %}
 						</ul>
-					</div>								
+					</div>
+													
 				</div>
+				
 			</div>
+			
 	    </div>
+		
 	</div>	
 </section>
+
+<div class="add-post-button">
+	<a href="{% url 'blog:add' %}" class="btn btn-primary">Add New Post</a>
+  </div>
+
 			<!-- End post-content Area -->
 {% endblock 'content' %}

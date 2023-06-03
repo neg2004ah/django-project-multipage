@@ -139,3 +139,18 @@ def edit(request, cid):
           if form.is_valid():
                form.save()
                return redirect('/blog/')
+           
+           
+           
+def add(request):
+     if request.method == 'GET':
+          context = {
+               'form' : PostForm()
+          }
+          return render(request,'blog/add.html',context=context)
+      
+     elif request.method == 'POST':
+          form = PostForm(request.POST, request.FILES)
+          if form.is_valid():
+               form.save()
+               return redirect('/blog/')
