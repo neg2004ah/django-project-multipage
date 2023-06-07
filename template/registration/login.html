@@ -1,0 +1,18 @@
+{% extends 'inherit/base.html' %}
+{% load static %}
+{% block 'title' %}login{% endblock 'title' %}
+{% block 'content' %}
+
+<form method="post"><br><br><br><br><br>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">submit</button>
+</form>
+<a href="{% url 'accounts:signup' %}"> singnup now   </a>
+<a href="{% url 'password_reset' %}"> forgot password ?   </a>
+{% if messages %}
+    {% for message in    messages  %}
+        {{ message }}
+    {% endfor %}
+{% endif %}
+{% endblock 'content' %}
