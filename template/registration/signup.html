@@ -4,7 +4,7 @@
 {% block 'title' %}Signup{% endblock 'title' %}
 {% block 'content' %}
 
-<form method="post"><br><br><br><br><br>
+<form method="post" enctype="multipart/form-data"><br><br><br><br><br>
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">submit</button>

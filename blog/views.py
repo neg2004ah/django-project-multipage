@@ -71,7 +71,7 @@ def blog_single(request,pid):
             
             
         try:
-            comments = Comments.objects.filter(which_post =pid ,status = True)
+            comments = Comments.objects.filter(which_post=pid ,status = True)
             replay = Replay.objects.filter(status = True)
             post = Post.objects.get(id=pid,status = True)
             posts = Post.objects.filter(status= True,published_date__lte = timezone.now())

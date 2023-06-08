@@ -64,6 +64,14 @@
             </div>
           </div>
         </div>
+		{% if request.user.is_authenticated %}
+		<div class="single-sidebar-widget user-info-widget">
+			<img src="{{ request.user.image.url }}" alt="{{ request.user.username }}">
+			<h4 style="color: white;">{{ request.user.username }}</h4>
+		</div>
+	{% endif %}
+
+
       </div>
       <div class="container main-menu">
         <div class="row align-items-center justify-content-between d-flex">

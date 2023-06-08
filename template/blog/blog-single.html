@@ -150,6 +150,7 @@
 									</div>
 								{% endfor %}	                                             				
 							</div>
+							{% if request.user.is_authenticated %}
 							<div class="comment-form">
 								<h4>Leave a Comment</h4>
 								<form method="post">
@@ -157,10 +158,10 @@
 									<input type="hidden" value="{{post.id}}" name="which_post"></input>
 									<div class="form-group form-inline">
 									  <div class="form-group col-lg-6 col-md-12 name">
-									    <input type="text" class="form-control" name="name" placeholder="Enter Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Name'">
+									    <input type="hidden" value="{{request.user.username}}" class="form-control" name="name" placeholder="Enter Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Name'">
 									  </div>
 									  <div class="form-group col-lg-6 col-md-12 email">
-									    <input type="email" class="form-control" name="email" placeholder="Enter email address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email address'">
+									    <input type="hidden" value="{{request.user.email}}" class="form-control"  name="email" placeholder="Enter email address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email address'">
 									  </div>										
 									</div>
 									<div class="form-group">
@@ -171,6 +172,7 @@
 									</div>
 									<button type="submit" class="primary-btn text-uppercase">Post Comment</button>
 								</form>
+								{% endif %}
 							</div>
 						</div>
 						{% include 'inherit/includetag.html' %}
