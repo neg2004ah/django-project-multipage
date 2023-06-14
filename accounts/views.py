@@ -27,17 +27,20 @@ def Login(request) :
                 messages.add_message(request, messages.ERROR , "User with this email does not exist.")
                 return redirect('accounts:login')
             
+        elif '@' not in username:  
+                
+            user = authenticate(request, username=username, password=password)
             
-        user = authenticate(request, username=username, password=password)
-        
-        if user is not None:
-            login(request, user)
-            return redirect('/')
-        
-        else :
-            messages.add_message(request, messages.ERROR , 'username or password is not valid ! ...')
+            if user is not None:
+                login(request, user)
+                return redirect('/')
+            
+            else :
+                messages.add_message(request, messages.ERROR , 'username or password is not valid ! ...')
+                return redirect('accounts:login')
+        else:
+            messages.add_message(request,messages.ERROR,'Input data is not valid.')
             return redirect('accounts:login')
-
 
 @login_required
 def Logout(request) :

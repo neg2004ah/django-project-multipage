@@ -4,6 +4,7 @@ from .models import *
 from .forms import *
 from advertisment.models import *
 from django.core.paginator import Paginator , PageNotAnInteger , EmptyPage
+from django.contrib.auth.decorators import login_required
 
 
 def blog_home(request,tag = None,username = None,cat = None):
@@ -141,7 +142,8 @@ def edit(request, cid):
                return redirect('/blog/')
            
            
-           
+     
+@login_required           
 def add(request):
      if request.method == 'GET':
           context = {
