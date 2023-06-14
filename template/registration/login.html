@@ -6,6 +6,7 @@
 <form method="post"><br><br><br><br><br>
     {% csrf_token %}
     {{ form.as_p }}
+    {{captcha}}
     <button type="submit">submit</button>
 </form>
 <a href="{% url 'accounts:signup' %}"> singnup now   </a>

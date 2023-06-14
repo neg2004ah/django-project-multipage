@@ -1,6 +1,7 @@
 {% extends 'inherit/base.html' %}
 {% load static %}
 {% load customtags %}
+{% load humanize %}
 {% block 'title' %}HOME{% endblock 'title' %}
 {% block 'content' %}	
 			<!-- start banner Area -->
@@ -189,7 +190,7 @@
 											<p>
 												{{post.content|truncates:3}}. . . 
 											</p>
-											<h6 class="date">{{post.published_date|date:"d M Y"}}</h6>
+											<h6 class="date">{{post.published_date|naturaltime}}</h6>
 										
 									
 								</div>

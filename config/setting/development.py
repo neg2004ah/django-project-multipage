@@ -13,6 +13,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
+APP_DIRS = True
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -21,11 +22,27 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
+    'robots',
+    'captcha',
+    'compressor',
     'home',
     'blog',
     'advertisment',
     'accounts',
 ]
+
+SITE_ID = 2
+
+COMPRESS_ENABLED = True
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

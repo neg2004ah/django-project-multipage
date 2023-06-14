@@ -15,9 +15,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import *
-from django.conf import settings 
+from django.urls import path ,include
+from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.sitemaps.views import sitemap
+from home.sitemap import StaticSiteMaps
+from blog.sitemap import DynamicSiteMaps
+
+
+sitemaps ={
+    'static':StaticSiteMaps,
+    'dynamic':DynamicSiteMaps,
+
+}
+
 
 
 urlpatterns = [
@@ -26,7 +37,18 @@ urlpatterns = [
     path('blog/',include('blog.urls')),
     path('accounts/',include("accounts.urls")),
     path('accounts/',include("django.contrib.auth.urls")),
+    path(
+        "sitemap.xml",
+        sitemap,
+        {"sitemaps": sitemaps},
+        name="django.contrib.sitemaps.views.sitemap",
+    ),
+    path('robots.txt/', include('robots.urls')),
+    path('captcha/', include('captcha.urls')),
+    
 ]
+
+
 
 urlpatterns += static(settings.STATIC_URL,document_root = settings.STATIC_ROOT) 
 

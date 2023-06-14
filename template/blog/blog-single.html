@@ -1,6 +1,7 @@
 
 {% extends 'inherit/base.html' %}
 {% load static %}
+{% load humanize %}
 {% block 'title' %}BLOG_SINGLE{% endblock 'title' %}
 {% block 'content' %}		  
 			<!-- start banner Area -->
@@ -38,7 +39,7 @@
 									</ul>
 									<div class="user-details row">
 										<p class="user-name col-lg-12 col-md-12 col-6"><a href="#">{{post.author}}</a> <span class="lnr lnr-user"></span></p>
-										<p class="date col-lg-12 col-md-12 col-6"><a href="#">{{post.published_date|date:"d M Y"}}</a> <span class="lnr lnr-calendar-full"></span></p>
+										<p class="date col-lg-12 col-md-12 col-6"><a href="#">{{post.published_date|naturaltime}}</a> <span class="lnr lnr-calendar-full"></span></p>
 										<p class="view col-lg-12 col-md-12 col-6"><a href="#">{{post.counted_views}} Views</a> <span class="lnr lnr-eye"></span></p>
 										<p class="comments col-lg-12 col-md-12 col-6"><a href="#">{{post.counted_comments}} Comments</a> <span class="lnr lnr-bubble"></span></p>
 										<ul class="social-links col-lg-12 col-md-12 col-6">
