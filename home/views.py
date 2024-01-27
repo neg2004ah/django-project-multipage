@@ -1,44 +1,44 @@
-from django.shortcuts import render,redirect,HttpResponseRedirect
-from .forms import NewsletterForm,ContactUsForm
-from blog.models import *
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 from .models import *
+from blog.models import Post
+from .forms import NewsLetterForm, ContactUsForm
 
-def home (request):
-    if request.method == 'GET':
-        cheap = CheapPackages.objects.all()
-        luxury = LuxuryPackages.objects.all()
-        camping = CampingPackages.objects.all()
-        
-        
-        
-        context = {
-            'cheap' : cheap , 
-            'luxury' : luxury,
-            'camping' :camping,
-        }
-        
-        return render(request,'home/index.html',context = context)
+def home(req):
+    if req.method == 'GET':
+        cheap = CheapPackage.objects.all()
+        camp = CampingPackage.objects.all()
+        context = {'cheap':cheap,'camp':camp}
+        return render(req,"home/index.html",context=context)
+    elif req.method == 'POST':
+        form = NewsLetterForm(req.POST)
+        if form.is_valid():
+            form.save()   
+        return redirect('/')
+
+def about(req):
+    return render(req,"home/about.html")
+
+def contact(req):
+    if req.method == 'GET':
+        return render(req,"home/contact.html")
     
-    elif request.method == 'POST':
-        form = NewsletterForm(request.POST)
+    elif req.method == 'POST':
+        form = ContactUsForm(req.POST)
         if form.is_valid():
             form.save()
-            return redirect('/')
+            return HttpResponseRedirect(req.path_info)
         
 
-def contact(request):
-    if request.method == 'GET':
-        return render(request,"home/contact.html")
+
+
+
+
+
+
+
+
     
-    elif request.method == 'POST':
-        form = ContactUsForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(request.path_info)
-        
 
-def elements (request):
-    return render(request,'home/elements.html')
 
-def about (request):
-    return render(request,'home/about.html')

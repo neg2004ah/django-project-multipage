@@ -1,16 +1,13 @@
 from django.db import models
 
+# Create your models here.
+
 
 class AdvertisModel(models.Model):
-    title = models.CharField(max_length=100,default = 'empty' )
-    image = models.ImageField(upload_to='adv/',default = "default.jpg")
-    link = models.CharField(max_length=255,default='#')
-    date_posted = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=100, default="empty")
+    link = models.CharField(max_length=250, default="#")
+    image = models.ImageField(upload_to="images", default="default.jpg")
 
     def __str__(self):
         return self.title
-    
-    class Meta:
-        ordering = ['-date_posted']
-        
     

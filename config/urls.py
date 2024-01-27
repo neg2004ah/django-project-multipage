@@ -1,8 +1,7 @@
-"""
-URL configuration for config project.
+"""config URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.2/topics/http/urls/
+    https://docs.djangoproject.com/en/4.1/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -22,34 +21,27 @@ from django.contrib.sitemaps.views import sitemap
 from home.sitemap import StaticSiteMaps
 from blog.sitemap import DynamicSiteMaps
 
-
 sitemaps ={
     'static':StaticSiteMaps,
-    'dynamic':DynamicSiteMaps,
-
+    'blog':DynamicSiteMaps,
 }
-
-
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('home.urls')),
-    path('blog/',include('blog.urls')),
+    path('',include("home.urls")),
+    path('blog/',include("blog.urls")),
     path('accounts/',include("accounts.urls")),
     path('accounts/',include("django.contrib.auth.urls")),
     path(
-        "sitemap.xml",
-        sitemap,
-        {"sitemaps": sitemaps},
-        name="django.contrib.sitemaps.views.sitemap",
-    ),
-    path('robots.txt/', include('robots.urls')),
-    path('captcha/', include('captcha.urls')),
+    "sitemap.xml",
+    sitemap,
+    {"sitemaps": sitemaps},
+    name="django.contrib.sitemaps.views.sitemap",
     
+),
+path('robots.txt/', include('robots.urls')),
+path('captcha/', include('captcha.urls')),
 ]
 
-
-
-urlpatterns += static(settings.STATIC_URL,document_root = settings.STATIC_ROOT) 
-
-urlpatterns += static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT) 
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

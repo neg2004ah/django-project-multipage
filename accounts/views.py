@@ -1,71 +1,56 @@
-from django.shortcuts import render, redirect,HttpResponseRedirect
+from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from .forms import SignUpForm,CaptchaForm
-from .models import CustomUser
+from .forms import SignUpForm , CaptchaForm
 
-def Login(request) :
-    if request.user.is_authenticated:
+
+
+
+
+def Login(req) :
+    if req.user.is_authenticated:
         return redirect('/')
     
-    elif request.method == 'GET':
+    elif req.method == 'GET':
         form = AuthenticationForm()
         captcha = CaptchaForm()
-        return render(request, 'registration/login.html', {'form': form, 'captcha': captcha})
-
-    elif request.method == 'POST':
-        captcha = CaptchaForm(request.POST)
-        
+        return render(req, 'registration/login.html', {'form': form, 'captcha': captcha})
+    
+    elif req.method == 'POST':
+        captcha = CaptchaForm(req.POST)
         if captcha.is_valid():
-            username = request.POST.get('username')
-            password = request.POST.get('password')
-            
-            if '@' in username:
-                try:
-                    user = CustomUser.objects.get(email=username)
-                    username = user.username
-
-                except CustomUser.DoesNotExist:
-                    messages.add_message(request, messages.ERROR , "User with this email does not exist.")
-                    return redirect('accounts:login')
-                
-                
-            user = authenticate(request, username=username, password=password)
-            
+            username = req.POST.get('username')
+            password = req.POST.get('password')
+            user = authenticate(username=username,password=password)
             if user is not None:
-                login(request, user)
+                login(req, user)
                 return redirect('/')
-            
             else :
-                messages.add_message(request, messages.ERROR , 'username or password is not valid ! ...')
+                messages.add_message(req, messages.ERROR , 'username or password is not valid ! ...')
                 return redirect('accounts:login')
         else : 
-            messages.add_message(request, messages.ERROR , 'captcha not valid')
+            messages.add_message(req, messages.ERROR , 'captcha not valid')
             return redirect('accounts:login')
 
-
 @login_required
-def Logout(request) :
-    logout(request)
+def Logout(req) :
+    logout(req)
     return redirect('/')
 
 
 
-def signup(request):
-    if request.method == 'GET':
+def signup(req):
+    if req.method == 'GET':
         form = SignUpForm()
-        return render(request, 'registration/signup.html', {'form': form})
+        return render(req, 'registration/signup.html', {'form': form})
     
-    elif request.method == 'POST':
-        form = SignUpForm(request.POST, request.FILES)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('/')
-        else :
-            messages.add_message(request, messages.ERROR , 'input value is not valid ! ...')
-            return redirect('accounts:signup')
-    
-    
+    elif req.method == 'POST':
+            form = SignUpForm(req.POST)
+            print (req.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('/')
+
+        
